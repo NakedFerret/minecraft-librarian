@@ -1,0 +1,55 @@
+---Minecraft Miner---
+
+--About--
+
+Well this little program developed out of my curiosity of Python, 
+my wonder over the wonderful module Beautiful Soup, and finally my
+ love of minecraft. I used to play minecraft with my brother on a 
+local server and often we would "give" stuff to ourselves. This 
+turned out to be a chore and using macros was limited to a couple
+ of block types. Hence the creation of Minecraft Scraper.
+
+--Usage--
+
+Type in the name of the block type and the id will come up.
+
+For Example: 
+
+ python MinecraftMiner.py bow
+
+Will Show:
+
+261 : bow
+
+Some searches return more than one result:
+
+$ python MinecraftMiner.py sword
+283 : Sword Gold
+268 : Sword Wooden
+267 : Iron Sword
+272 : Sword Stone
+276 : Diamond Sword
+
+Currently the only options to filter the result are:
+
+-w (default) : Match whole words
+-c : Return all the items which contain the strings passed
+-m : Find the closest match by comparing the length of the search and the result
+
+The last feature is to return the ids by themselves using the argument "-o"
+
+python MinecraftMiner.py -o iron sword
+267
+
+Oh and I forgot to tell you that the way the program finds the
+ ids is by searching the official minecraft wiki. It searches 
+through the html tables and creates a local file to speed up
+ the next searches. To force the script to use the site use 
+the "-u" argument.
+
+--Disclaimer--
+No license on this I don't really care. It's kinda late here and 
+I'm writting this readme in Emacs so expect many formatting, 
+grammatical, and spelling errors.
+
+Oh and it also happens to be the first time I'm using git/github.
