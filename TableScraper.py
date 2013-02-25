@@ -16,7 +16,6 @@ class WikiTableScraper(object):
     def populateData(self,table):
 
         rows = table.findAll('tr')
-        print rows
         for tr in rows[1:]:
             dec = -1
             name = None
@@ -24,7 +23,7 @@ class WikiTableScraper(object):
 
             
             #[2] and [4] contain dec and block type,respectively
-            if(list[2].span == None):
+             if(list[2].span == None):
                 dec = list[2].string.strip()
             else:
                 dec = list[2].span.string.strip()
