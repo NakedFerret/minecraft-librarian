@@ -21,9 +21,18 @@ for t in soup:
 
 for t in tables[:1]:
     rows = t.findAll('tr')
-    for tr in rows[1:2]:
-        td_list = [x for x in tr.contents if strip(x)]
-        print td_list
+    for tr in rows[1:]:
+        non_empty_tds = [x for x in tr.contents if str(x).strip()]
+        name = non_empty_tds[3].find('a').string
+
+        dec = non_empty_tds[1]
+        if dec.span:
+            dec = dec.span.string
+        else:
+            dec = dec.string
+
+        print dec, name
+        
         # Name -- print tr.find('a', title=True)
         # ['', ' ', '\n', 'first']
         # [x for x in l if x.strip()]
