@@ -4,7 +4,7 @@ import urllib
 from BeautifulSoup import BeautifulSoup
 from collections import OrderedDict
 
-BLOCKIDSTITLE = 'Block IDs (Minecraft Beta)'
+BLOCKIDSTITLE = 'Block IDs'
 ITEMSIDSTITLE = 'Item IDs'
 WIKIURL = 'http://www.minecraftwiki.net/wiki/Data_values'
 
@@ -16,10 +16,12 @@ class WikiTableScraper(object):
     def populateData(self,table):
 
         rows = table.findAll('tr')
+        print rows
         for tr in rows[1:]:
             dec = -1
             name = None
             list = tr.contents
+
             
             #[2] and [4] contain dec and block type,respectively
             if(list[2].span == None):
@@ -27,7 +29,7 @@ class WikiTableScraper(object):
             else:
                 dec = list[2].span.string.strip()
 
-            sup = list[4].find('sup')
+            sup = list[4].find('sup')`
             if sup != None:
                 sup.extract()
                 
@@ -54,7 +56,7 @@ class WikiTableScraper(object):
 
     def mineTablesAfterTitle(self,title,numOfTables=1):
         
-        htwos = self.soup.findAll('h2')
+        htwos = self.soup.findAll('h3')
         for h2 in htwos:
             if h2.renderContents().find(title) != -1:
                 H2 = h2
@@ -65,6 +67,7 @@ class WikiTableScraper(object):
         for i in range(numOfTables-1):
             table = table.findNext('table')
             self.populateData(table)
+
 
     def scrapeTables(self):
         f = urllib.urlopen(WIKIURL)
