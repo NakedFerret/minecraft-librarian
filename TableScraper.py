@@ -54,7 +54,8 @@ class WikiTableScraper(object):
         self.dataValues.clear()
 
     def scrapeTables(self):
-        f = urllib.urlopen(WIKIURL)
+        # f = urllib.urlopen(WIKIURL)
+        f = open('data_values.html')
         source_html = f.read()
         f.close()
         
