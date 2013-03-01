@@ -24,15 +24,41 @@ class WikiTableScraper(object):
 
     @staticmethod
     def extract_name(td):
-        name = td
-        if td.find('sup'):
-            td.find('sup').extract()
+        """
+        The tds can come in one of 4 ways
+        1. <td> text </td>
+        2. <td> <a> link_text </a> </td>
+        3. <td> text <a> link_text </a> </td>
+        4. <td> <a> link_text </a> text </td>
 
-        if td.find('a'):
-            name = td.find('a').string
+        The information to be extracted should be in the form of
+        1. text
+        2. link_text
+        3. text + link_text
+        4. link_text + text
+        """
+        name = ""
+        
+        # if there is a sup tag, take it out
+        sup = td.find('sup')
+        if sup:
+            sup.extract()
+
+        # if there is a link, extract the text
+        a = td.find('a')
+        link_text = ""
+        if a:
+            link_text = a.string
+            a.extract()
+
+        if td.string and td.string.strip():
+            if td.string.find(' ') == 0:
+                name = link_text + td.string
+            else:
+                name = td.string + link_text
         else:
-            name = td.string
-
+            name = link_text
+            
         return name
 
     def getRelevantTables(self, source_html):
