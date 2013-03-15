@@ -23,4 +23,8 @@ CACHE_FILE_NAME = "data_values.cache"
 scraper = WikiTableScraper()
 ids = scraper.scrapeTables()
 
+import operator
+
+for k,v in sorted(ids.iteritems(), key=operator.itemgetter(1)):
+    print v.ljust(4), k
 

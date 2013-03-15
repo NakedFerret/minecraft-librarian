@@ -39,41 +39,30 @@ class WikiTableScraper(object):
         4. link_text + text
         """
         name = ""
-        log_string = ""
-        log_string +=  "-----\n"
-        log_string += str(td) + "\n"
         # if there is a sup tag, take it out
         sup = td.find('sup')
         if sup:
-            log_string += str(sup) + "\n"
             sup.extract()
 
         # if there is a link, extract the text
         a = td.find('a')
         link_text = ""
         if a:
-            log_string += str(a) + "\n"
             link_text = a.string
             a.extract()
             
-        
-        log_string += str(td) + "\n"
-        if td.string and td.string.strip():
-            if td.string.find(' ') == 0:
-                log_string += "space at start \n"
-                name = link_text + td.string
+        # change to 
+        match = re.match("<td>([ \w\(\)]{2,})</td>", str(td))
+        if match:
+            text = match.group(1)
+            print text
+            if text.find(' ') == 0:
+                name = link_text + text
             else:
-                log_string += "space at end \n"
-                name = td.string + link_text
+                name = text + link_text
         else:
-            log_string += "empty string \n"
             name = link_text
 
-        log_string += name + "\n"
-        log_string += "-----\n\n\n"
-        if re.match("<td>([ a-zA-Z]+)</td>",str(td)):
-            print log_string
-            
         return name
 
     def getRelevantTables(self, source_html):
