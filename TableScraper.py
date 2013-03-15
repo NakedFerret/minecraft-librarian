@@ -45,23 +45,22 @@ class WikiTableScraper(object):
             sup.extract()
 
         # if there is a link, extract the text
-        a = td.find('a')
+        a_list = td.findAll('a')
         link_text = ""
-        if a:
-            link_text = a.string
-            a.extract()
-            
-        # change to 
+        if a_list:
+            for a in a_list:
+                link_text += a.string + " "
+                a.extract()
+
         match = re.match("<td>([ \w\(\)]{2,})</td>", str(td))
         if match:
             text = match.group(1)
-            print text
             if text.find(' ') == 0:
-                name = link_text + text
+                name = link_text.strip() + " " + text.strip()
             else:
-                name = text + link_text
+                name = text.strip() + " " + link_text.strip()
         else:
-            name = link_text
+            name = link_text.strip()
 
         return name
 
