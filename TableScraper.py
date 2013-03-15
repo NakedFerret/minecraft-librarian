@@ -26,17 +26,10 @@ class WikiTableScraper(object):
     @staticmethod
     def extract_name(td):
         """
-        The tds can come in one of 4 ways
-        1. <td> text </td>
-        2. <td> <a> link_text </a> </td>
-        3. <td> text <a> link_text </a> </td>
-        4. <td> <a> link_text </a> text </td>
+        The tds can come in the following ways
+        <td> [text] [<a>] [<sup>] </td>
 
-        The information to be extracted should be in the form of
-        1. text
-        2. link_text
-        3. text + link_text
-        4. link_text + text
+        At least one has to be there and as many as all can be there
         """
         name = ""
         # if there is a sup tag, take it out
