@@ -32,23 +32,22 @@ class WikiTableScraper(object):
         At least one has to be there and as many as all can be there
         """
         name = ""
-        # if there is a sup tag, take it out
-        sup = td.find('sup')
-        if sup:
+        # if there are any sup tags, take them out
+        for sup in td.findAll('sup'):
             sup.extract()
 
-        # if there is a link, extract the text
-        a_list = td.findAll('a')
+        # if there are any a tags, extract the text, 
+        # join the text, and take out the tags
         link_text = ""
-        if a_list:
-            for a in a_list:
-                link_text += a.string + " "
-                a.extract()
+        for a in td.findAll('a'):
+            link_text += a.string + " "
+            a.extract()
 
+        # time to put the name of the item together
         match = re.match("<td>([ \w\(\)]{2,})</td>", str(td))
         if match:
             text = match.group(1)
-            if text.find(' ') == 0:
+            if text[0] == ' ':
                 name = link_text.strip() + " " + text.strip()
             else:
                 name = text.strip() + " " + link_text.strip()
