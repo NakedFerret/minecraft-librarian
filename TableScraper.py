@@ -28,10 +28,31 @@ class WikiTableScraper(object):
     def extract_name(self, td):
         """Returns the name of the minecraft object from a <td>.
         Assumes the correct <td> was given"""
+        name = ""
+        # if there are any sup tags, take them out
         for sup in td.findAll('sup'):
             sup.extract()
-        return td.getText()
 
+        # if there are any a tags, extract the text,
+        # join the text, and take out the tags
+        link_text = ""
+        for a in td.findAll('a'):
+            link_text += a.string + " "
+            a.extract()
+
+        # time to put the name of the item together
+        match = re.match("<td>([ \w\(\)]{2,})</td>", str(td))
+        if match:
+            text = match.group(1)
+            if text[0] == ' ':
+                name = link_text.strip() + " " + text.strip()
+            else:
+                name = text.strip() + " " + link_text.strip()
+        else:
+            name = link_text.strip()
+
+        return name
+        
     def getRelevantTables(self, source_html):
         """Returns the tables that contain the minecraft object info"""
         tables = list()
