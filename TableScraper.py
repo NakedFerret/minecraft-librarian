@@ -13,8 +13,7 @@ class WikiTableScraper(object):
     def __init__(self):
         self.dataValues = dict()
 
-    @staticmethod
-    def extract_decimal(td):
+    def extract_decimal(self, td):
         dec = td
         if td.span:
             dec = td.span.string
@@ -23,38 +22,13 @@ class WikiTableScraper(object):
             
         return dec
 
-    @staticmethod
-    def extract_name(td):
+    def extract_name(self, td):
         """
-        The tds can come in the following ways
-        <td> [text] [<a>] [<sup>] </td>
-
-        At least one has to be there and as many as all can be there
+        Extracts the name of the minecraft object from a <td> 
         """
-        name = ""
-        # if there are any sup tags, take them out
         for sup in td.findAll('sup'):
             sup.extract()
-
-        # if there are any a tags, extract the text, 
-        # join the text, and take out the tags
-        link_text = ""
-        for a in td.findAll('a'):
-            link_text += a.string + " "
-            a.extract()
-
-        # time to put the name of the item together
-        match = re.match("<td>([ \w\(\)]{2,})</td>", str(td))
-        if match:
-            text = match.group(1)
-            if text[0] == ' ':
-                name = link_text.strip() + " " + text.strip()
-            else:
-                name = text.strip() + " " + link_text.strip()
-        else:
-            name = link_text.strip()
-
-        return name
+        return td.getText()
 
     def getRelevantTables(self, source_html):
         tables = list()
@@ -87,8 +61,8 @@ class WikiTableScraper(object):
             for tr in rows[1:]:
                 non_empty_tds = [x for x in tr.contents if str(x).strip()]
 
-                dec = WikiTableScraper.extract_decimal(non_empty_tds[1])
-                name = WikiTableScraper.extract_name(non_empty_tds[3])
+                dec = self.extract_decimal(non_empty_tds[1])
+                name = self.extract_name(non_empty_tds[3])
                 self.dataValues[name] = dec
 
         return self.dataValues
