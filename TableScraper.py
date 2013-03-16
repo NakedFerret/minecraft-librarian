@@ -14,7 +14,7 @@ class WikiTableScraper(object):
     def __init__(self):
         self.dataValues = dict()
 
-    def extract_decimal(self, td):
+    def _extract_decimal(self, td):
         """Returns the id of the minecraft object from a <td>. 
         Assumes the correct <td> was given"""
         dec = td
@@ -25,7 +25,7 @@ class WikiTableScraper(object):
             
         return dec
 
-    def extract_name(self, td):
+    def _extract_name(self, td):
         """Returns the name of the minecraft object from a <td>.
         Assumes the correct <td> was given"""
         name = ""
@@ -53,7 +53,7 @@ class WikiTableScraper(object):
 
         return name
         
-    def getRelevantTables(self, source_html):
+    def _getRelevantTables(self, source_html):
         """Returns the tables that contain the minecraft object info"""
         tables = list()
         soup =  BeautifulSoup(source_html, parseOnlyThese=SoupStrainer('table'))
@@ -79,7 +79,7 @@ class WikiTableScraper(object):
         source_html = f.read()
         f.close()
         
-        tables = self.getRelevantTables(source_html)
+        tables = self._getRelevantTables(source_html)
 
         for t in tables:
             rows = t.findAll('tr')
@@ -87,9 +87,9 @@ class WikiTableScraper(object):
                 non_empty_tds = [x for x in tr.contents if str(x).strip()]
 
                 # column 1 (0 based) contains the decimal numbers
-                dec = self.extract_decimal(non_empty_tds[1])
+                dec = self._extract_decimal(non_empty_tds[1])
                 # column 3 (0 based) contains the name of the object
-                name = self.extract_name(non_empty_tds[3])
+                name = self._extract_name(non_empty_tds[3])
                 self.dataValues[dec] = name
 
         return self.dataValues
