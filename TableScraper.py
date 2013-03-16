@@ -9,7 +9,7 @@ BLOCK_TYPE_HEADER = "<th>Block type</th>"
 ITEM_HEADER = "<th>Item</th>"
 
 class WikiTableScraper(object):
-"""Finds all the tables in minecraft wiki and extracts the id and the name"""
+    """Finds all the tables in minecraft wiki and extracts the id and the name"""
     
     def __init__(self):
         self.dataValues = dict()
