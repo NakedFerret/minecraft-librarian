@@ -53,7 +53,7 @@ class WikiTableScraper(object):
 
     def scrapeTables(self):
         """Returns a dict of minecraft objects. 
-        The name is the key and the id is the value"""
+        The id is the key and the name is the value"""
         f = urllib.urlopen(WIKIURL)
         source_html = f.read()
         f.close()
@@ -69,7 +69,7 @@ class WikiTableScraper(object):
                 dec = self.extract_decimal(non_empty_tds[1])
                 # column 3 (0 based) contains the name of the object
                 name = self.extract_name(non_empty_tds[3])
-                self.dataValues[name] = dec
+                self.dataValues[dec] = name
 
         return self.dataValues
 
