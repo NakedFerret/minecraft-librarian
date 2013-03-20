@@ -11,9 +11,6 @@ ITEM_HEADER = "<th>Item</th>"
 class WikiTableScraper(object):
     """Finds all the tables in minecraft wiki and extracts the id and the name"""
     
-    def __init__(self):
-        self.dataValues = dict()
-
     def _extract_decimal(self, td):
         """Returns the id of the minecraft object from a <td>. 
         Assumes the correct <td> was given"""
@@ -66,12 +63,6 @@ class WikiTableScraper(object):
 
         return tables
 
-    def getValues(self):
-        return self.dataValues
-
-    def reset(self):
-        self.dataValues.clear()
-
     def scrapeTables(self):
         """Returns a dict of minecraft objects. 
         The id is the key and the name is the value"""
@@ -81,6 +72,7 @@ class WikiTableScraper(object):
         
         tables = self._getRelevantTables(source_html)
 
+        data_values = dict()
         for t in tables:
             rows = t.findAll('tr')
             for tr in rows[1:]:
@@ -90,8 +82,8 @@ class WikiTableScraper(object):
                 dec = self._extract_decimal(non_empty_tds[1])
                 # column 3 (0 based) contains the name of the object
                 name = self._extract_name(non_empty_tds[3])
-                self.dataValues[dec] = name
+                data_values[dec] = name
 
-        return self.dataValues
+        return data_values
 
 
