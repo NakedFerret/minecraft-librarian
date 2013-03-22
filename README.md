@@ -1,4 +1,4 @@
-# Minecraft Miner
+# Minecraft Librarian
 
 
 ## About
